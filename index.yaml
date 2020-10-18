@@ -6,7 +6,7 @@ entries:
     description: A Helm chart for Generic Apps
     digest: 613c1030215335e429f542798cad95a132122cc4422d528ebca36e58bfbf2f77
     home: https://github.com/Isakgicu/helm-apps
-    icon: https://github.com/Isakgicu/helm-apps/icon.ico
+    icon: https://isakgicu.github.io/helm-apps//icon.ico
     keywords:
     - generic-app
     maintainers:
@@ -16,6 +16,6 @@ entries:
     sources:
     - https://github.com/Isakgicu/helm-apps
     urls:
-    - https://github.com/Isakgicu/helm-apps/generic-app-0.1.1.tgz
+    - https://isakgicu.github.io/helm-apps/generic-app-0.1.1.tgz
     version: 0.1.1
 generated: "2020-10-18T18:43:27.581358+03:00"
