@@ -16,7 +16,6 @@ spec:
   selector:
     matchLabels:
       app: {{ .Release.Name }}
-  {{- end }}
   minReadySeconds: {{ default 1 .Values.deployment.minReadySeconds}}
   revisionHistoryLimit: 10
   {{- if .Values.deployment.strategy }}
