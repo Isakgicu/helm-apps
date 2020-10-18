@@ -13,6 +13,10 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  {{- end }}
   minReadySeconds: {{ default 1 .Values.deployment.minReadySeconds}}
   revisionHistoryLimit: 10
   {{- if .Values.deployment.strategy }}
