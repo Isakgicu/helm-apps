@@ -1,0 +1,13 @@
+apiVersion: v2
+description: A Helm chart for Generic Apps
+home: https://github.com/Isakgicu/helm-apps
+icon: https://github.com/Isakgicu/helm-apps/icon.ico
+keywords:
+- generic-app
+maintainers:
+- name: Isak
+  email: isakgicu@gmail.com
+name: generic-app
+sources:
+- https://github.com/Isakgicu/helm-apps
+version: 0.1.1

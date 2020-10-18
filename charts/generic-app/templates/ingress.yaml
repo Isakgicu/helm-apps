@@ -1,0 +1,42 @@
+{{- if .Values.ingress }}
+{{ $relname := .Values.service.name }}
+{{ if .Values.service.type }}
+{{ else }}
+{{ $relname := .Values.service.name }}
+{{ $annotations := toYaml .Values.ingress.annotations | indent 4 }}
+{{- range .Values.ingress.hosts }}
+{{- $hostname := .name }}
+{{ $domain := (split "." .name)._0 }}
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $relname }}-{{ $domain }}
+  annotations:
+{{ $annotations }}
+spec:
+  tls:
+  - hosts:
+    {{- range .rules }}
+    - {{ .subdomain }}{{ $hostname }}
+    {{- end }}
+    {{- if .secretName }}
+    secretName: {{ .secretName }}
+    {{- else }}
+    secretName: {{ $relname}}-{{ $hostname }}-tls
+    {{- end }}
+  rules:
+    {{- range .rules }}
+    - host: {{ .subdomain }}{{ $hostname }}
+      http:
+        paths:
+        - path: {{ default "/" .path }}
+          backend:
+            serviceName: {{ $relname }}
+            servicePort: 80
+    {{- end }}
+---
+  {{ end }}
+
+{{ end }}
+{{ end }}
