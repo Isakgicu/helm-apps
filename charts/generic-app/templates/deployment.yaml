@@ -4,18 +4,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
   {{- if .Values.deployment.podAntiaffinity.enabled }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
   {{- end }}
-  labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}
   minReadySeconds: {{ default 1 .Values.deployment.minReadySeconds}}
   revisionHistoryLimit: 10
   {{- if .Values.deployment.strategy }}
