@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   generic-app:
   - apiVersion: v2
-    created: "2020-11-18T15:33:08.91563+02:00"
+    created: "2020-11-18T16:33:21.381721+02:00"
     description: A Helm chart for Generic Apps
-    digest: 5494aa9eef459f56a158a240df996ce04dd576045db6a838b6ea2cb9e748a94c
+    digest: bf0c4328ed43e1d2c33f8f8605f1c66abb3ad022ecb555c84ab9e20fda78e343
     home: https://github.com/Isakgicu/helm-apps
     icon: https://github.com/Isakgicu/helm-apps/icon.ico
     keywords:
@@ -19,7 +19,7 @@ entries:
     - https://isakgicu.github.io/helm-apps/generic-app-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
-    created: "2020-11-18T15:33:08.914995+02:00"
+    created: "2020-11-18T16:33:21.380993+02:00"
     description: A Helm chart for Generic Apps
     digest: 3cac5311a9083ffd4eddb96675d7cd2e5bf07eab6c6cfd5b2a88551ffb36a892
     home: https://github.com/Isakgicu/helm-apps
@@ -35,4 +35,4 @@ entries:
     urls:
     - https://isakgicu.github.io/helm-apps/generic-app-0.1.1.tgz
     version: 0.1.1
-generated: "2020-11-18T15:33:08.913831+02:00"
+generated: "2020-11-18T16:33:21.379159+02:00"

@@ -16,14 +16,6 @@ spec:
   {{- end }}
   minReadySeconds: {{ default 1 .Values.replicaSet.minReadySeconds}}
   revisionHistoryLimit: {{ .Values.revisionhistory }}
-  {{- if .Values.replicaSet.strategy }}
-  strategy:
-{{ toYaml .Values.replicaSet.strategy | indent 4 }}
-  {{- else }}
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 50%
-  {{- end }}
   template:
     metadata:
       labels:
