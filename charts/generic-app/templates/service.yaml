@@ -4,9 +4,9 @@ metadata:
   name: {{ .Values.service.name }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    {{ if .Values.service.loadbalancer }}
+    {{- if .Values.service.loadbalancer }}
     load-balancer-web: 'true'
-    {{ end }}
+    {{- end }}
 spec:
   ports:
   - port: {{ .Values.service.externalPort }}
