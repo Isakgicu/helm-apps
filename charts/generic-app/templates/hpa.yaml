@@ -7,9 +7,16 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
-    kind: ReplicaSet
-    name: {{ .Release.Name }}
+  {{- if .Values.replicaSet.enabled }}
+  apiVersion: apps/v1
+  kind: ReplicaSet
+  name: "{{ .Release.Name }}-rs"
+  {{- end }}
+  {{- if .Values.deployment.enabled }}
+  apiVersion: apps/v1
+  kind: Deployment
+  name: "{{ .Release.Name }}-deployment"
+  {{- end }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   minReplicas: {{ .Values.hpa.minReplicas }}
   metrics:

@@ -16,10 +16,10 @@ spec:
   selector:
     {{- if .Values.replicaSet.enabled }}
     app: "{{ .Release.Name }}-rs"
-    {{ end }}
+    {{- end }}
     {{- if .Values.deployment.enabled }}
     app: "{{ .Release.Name }}-deployment"
-    {{ end }}
-  {{ if .Values.service.type }}
+    {{- end }}
+  {{- if .Values.service.type }}
   type: {{ .Values.service.type }}
-  {{ end }}
+  {{- end }}
