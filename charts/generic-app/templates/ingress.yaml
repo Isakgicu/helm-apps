@@ -8,7 +8,7 @@
 {{- $hostname := .name }}
 {{ $domain := (split "." .name)._0 }}
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $relname }}-{{ $domain }}
@@ -31,9 +31,12 @@ spec:
       http:
         paths:
         - path: {{ default "/" .path }}
+          pathType: Prefix ## Supported options: Prefix, Exact and Mixed
           backend:
-            serviceName: {{ $relname }}
-            servicePort: 80
+            service:
+              name: {{ $relname }}
+              port:
+                number: 80
     {{- end }}
 ---
   {{ end }}

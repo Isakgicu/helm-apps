@@ -4,19 +4,9 @@ metadata:
   name: {{ .Values.service.name }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-  {{ if contains "LoadBalancer" .Values.service.type }}
-  annotations:
-  {{ if .Values.service.internal }}
-    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ .Values.service.acm }}
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
-  {{ else }}
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ .Values.service.acm }}
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
-  {{ end }}
-  {{ end }}
+    {{ if .Values.service.loadbalancer }}
+    load-balancer-web: 'true'
+    {{ end }}
 spec:
   ports:
   - port: {{ .Values.service.externalPort }}
@@ -24,13 +14,12 @@ spec:
     protocol: TCP
     name: {{ .Release.Name }}
   selector:
-    app: {{ .Release.Name }}
+    {{- if .Values.replicaSet.enabled }}
+    app: "{{ .Release.Name }}-rs"
+    {{ end }}
+    {{- if .Values.deployment.enabled }}
+    app: "{{ .Release.Name }}-deployment"
+    {{ end }}
   {{ if .Values.service.type }}
   type: {{ .Values.service.type }}
-  {{ end }}
-  {{ if .Values.service.loadBalancerSourceRanges }}
-  loadBalancerSourceRanges:
-  {{- range .Values.service.loadBalancerSourceRange }}
-  - {{ . }}
-  {{- end }}
   {{ end }}

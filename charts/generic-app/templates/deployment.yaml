@@ -1,9 +1,10 @@
+{{- if .Values.deployment.enabled }}
 {{ $podAnnotations := toYaml .Values.deployment.podAnnotations | indent 8 }}
 {{ $nodeSelector := toYaml .Values.deployment.nodeSelector | indent 8 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: "{{ .Release.Name }}-deployment"
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
@@ -133,4 +134,5 @@ spec:
 {{- if .Values.deployment.extraVolumes }}
       volumes:
 {{ toYaml .Values.deployment.extraVolumes | indent 6 }}
+{{- end }}
 {{- end }}
