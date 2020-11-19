@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   generic-app:
   - apiVersion: v2
-    created: "2020-11-19T19:11:35.554983+02:00"
+    created: "2020-11-19T19:20:18.106092+02:00"
     description: A Helm chart for Generic Apps
-    digest: 4acde580ebffa550a2e2ca248ae21bc482a49c0041049c1ae155262c5b7e9feb
+    digest: 49bca82192388ea3df030c1c2c00c0ddd867792ca89ad4aa1379976dfe64504a
     home: https://github.com/Isakgicu/helm-apps
     icon: https://github.com/Isakgicu/helm-apps/icon.ico
     keywords:
@@ -19,7 +19,7 @@ entries:
     - https://isakgicu.github.io/helm-apps/generic-app-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
-    created: "2020-11-19T19:11:35.549293+02:00"
+    created: "2020-11-19T19:20:18.104498+02:00"
     description: A Helm chart for Generic Apps
     digest: 3cac5311a9083ffd4eddb96675d7cd2e5bf07eab6c6cfd5b2a88551ffb36a892
     home: https://github.com/Isakgicu/helm-apps
@@ -38,7 +38,7 @@ entries:
   mongo-express:
   - apiVersion: v2
     appVersion: 0.55.0
-    created: "2020-11-19T19:11:35.555673+02:00"
+    created: "2020-11-19T19:20:18.107095+02:00"
     description: Web-based MongoDB admin interface
     digest: 4d8d2d6b681143f1d241c5a7ecef4815fbd523bd449c6fce8413c2b04d9f1bbb
     home: https://github.com/Isakgicu/helm-apps
@@ -50,4 +50,4 @@ entries:
     urls:
     - https://isakgicu.github.io/helm-apps/mongo-express-1.2.0.tgz
     version: 1.2.0
-generated: "2020-11-19T19:11:35.547943+02:00"
+generated: "2020-11-19T19:20:18.103269+02:00"
