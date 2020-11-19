@@ -1,0 +1,31 @@
+deployment:
+  enabled: false
+replicaset:
+  enabled: true
+  image:
+    repository: isakgicu/crystal-dashboard
+    tag: latest
+  initialDelaySeconds: "30"
+  minReadySeconds: "20"
+  periodSeconds: "30"
+  timeoutSeconds: "5"
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+  hosts:
+    - name: isac.cloud
+      rules:
+        - path: /
+          subdomain: crystal-dashboard.
+  resources:
+  limits:
+    cpu: 300m
+    memory: 300Mi
+  requests:
+    cpu: 200m
+    memory: 200Mi
+service:
+  name: crystal-dashboard
+  externalPort: "80"
+  internalPort: "80"
