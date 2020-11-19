@@ -1,10 +1,10 @@
-apiVersion: v1
-appVersion: 0.54.0
-description: Web-based MongoDB admin interface, written with Node.js and express
-home: https://github.com/mongo-express/mongo-express
-icon: https://raw.githubusercontent.com/mongo-express/mongo-express/master/public/images/mongo-express-logo.png
+apiVersion: v2
+appVersion: 0.55.0
+description: Web-based MongoDB admin interface
+home: https://github.com/Isakgicu/helm-apps
+icon: https://github.com/Isakgicu/helm-apps/mongo-express-logo.png
 maintainers:
-- name: iTECH
-  email: support@itech.md
+- name: Isakgicu
+  email: isakgicu@gmail.com
 name: mongo-express
-version: 1.1.0
+version: 1.2.0
