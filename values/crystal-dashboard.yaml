@@ -1,8 +1,10 @@
 deployment:
   enabled: false
-replicaset:
+replicaSet:
   enabled: true
+  healthcheck: /healthz
   image:
+    pullPolicy: IfNotPresent
     repository: isakgicu/crystal-dashboard
     tag: latest
   initialDelaySeconds: "30"
