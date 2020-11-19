@@ -15,6 +15,7 @@ metadata:
   annotations:
 {{ $annotations }}
 spec:
+  {{- if .Values.ingress.tls.enabled }}
   tls:
   - hosts:
     {{- range .rules }}
@@ -25,6 +26,7 @@ spec:
     {{- else }}
     secretName: {{ $relname}}-{{ $hostname }}-tls
     {{- end }}
+  {{- end }}
   rules:
     {{- range .rules }}
     - host: {{ .subdomain }}{{ $hostname }}

@@ -14,12 +14,7 @@ spec:
     protocol: TCP
     name: {{ .Release.Name }}
   selector:
-    {{- if .Values.replicaSet.enabled }}
-    app: "{{ .Release.Name }}-rs"
-    {{- end }}
-    {{- if .Values.deployment.enabled }}
-    app: "{{ .Release.Name }}-deployment"
-    {{- end }}
+    app: {{ .Release.Name }}
   {{- if .Values.service.type }}
   type: {{ .Values.service.type }}
   {{- end }}
