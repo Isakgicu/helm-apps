@@ -28,7 +28,7 @@ spec:
               port:
                 number: 80
     {{- end }}
-  {{- if .Values.ingressTLS -}}
+{{- if .Values.ingress.tls }}
   tls:
   - hosts:
     {{- range .rules }}
@@ -39,7 +39,7 @@ spec:
     {{- else }}
     secretName: {{ $relname}}-{{ $hostname }}-tls
     {{- end }}
-  {{- end }}
+{{- end }}
 ---
   {{ end }}
 
