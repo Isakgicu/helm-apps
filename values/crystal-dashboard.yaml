@@ -12,6 +12,7 @@ replicaSet:
   periodSeconds: "30"
   timeoutSeconds: "5"
 ingress:
+  enabled: true
   tls: 
     enabled: false
   annotations:
