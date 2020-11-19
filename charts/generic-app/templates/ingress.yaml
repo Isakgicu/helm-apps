@@ -28,18 +28,6 @@ spec:
               port:
                 number: 80
     {{- end }}
-{{- if .Values.ingress.spec.tls }}
-  tls:
-  - hosts:
-    {{- range .rules }}
-    - {{ .subdomain }}{{ $hostname }}
-    {{- end }}
-    {{- if .secretName }}
-    secretName: {{ .secretName }}
-    {{- else }}
-    secretName: {{ $relname}}-{{ $hostname }}-tls
-    {{- end }}
-{{- end }}
 ---
   {{ end }}
 
