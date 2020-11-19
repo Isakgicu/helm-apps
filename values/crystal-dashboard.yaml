@@ -13,8 +13,6 @@ replicaSet:
   timeoutSeconds: "5"
 ingress:
   enabled: true
-  tls: 
-    enabled: false
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-body-size: 50m
@@ -23,7 +21,16 @@ ingress:
       rules:
         - path: /
           subdomain: crystal-dashboard.
-  resources:
+tls:
+  enabled: true
+hpa:
+  maxReplicas: 2
+  minReplicas: 1
+  cpuUtilization:
+    targetPercentage: 70
+  memoryUtilization:
+    targetPercentage: 70
+resources:
   limits:
     cpu: 300m
     memory: 300Mi
