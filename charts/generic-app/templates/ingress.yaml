@@ -1,4 +1,4 @@
-{{ if .Values.ingress.enabled }}
+{{- if .Values.ingress -}}
 {{ $relname := .Values.service.name }}
 {{ if .Values.service.type }}
 {{ else }}
@@ -15,8 +15,8 @@ metadata:
   annotations:
 {{ $annotations }}
 spec:
-  {{- if .Values.ingress.tls.enabled }}
   tls:
+  {{- if .Values.ingress.tls.enabled -}}
   - hosts:
     {{- range .rules }}
     - {{ .subdomain }}{{ $hostname }}
@@ -42,5 +42,6 @@ spec:
     {{- end }}
 ---
   {{ end }}
+
 {{ end }}
 {{ end }}
