@@ -16,7 +16,7 @@ replicaSet:
 replicaCount: 1
 ingress:
   enabled: false
-  tls: false
+ingressTLS: false
 hpa:
   maxReplicas: 2
   minReplicas: 1
