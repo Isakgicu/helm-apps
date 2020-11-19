@@ -15,18 +15,6 @@ metadata:
   annotations:
 {{ $annotations }}
 spec:
-  tls:
-  {{- if .Values.ingress.tls.enabled -}}
-  - hosts:
-    {{- range .rules }}
-    - {{ .subdomain }}{{ $hostname }}
-    {{- end }}
-    {{- if .secretName }}
-    secretName: {{ .secretName }}
-    {{- else }}
-    secretName: {{ $relname}}-{{ $hostname }}-tls
-    {{- end }}
-  {{- end }}
   rules:
     {{- range .rules }}
     - host: {{ .subdomain }}{{ $hostname }}
@@ -40,6 +28,18 @@ spec:
               port:
                 number: 80
     {{- end }}
+  {{- if .Values.ingress.tls -}}
+  tls:
+  - hosts:
+    {{- range .rules }}
+    - {{ .subdomain }}{{ $hostname }}
+    {{- end }}
+    {{- if .secretName }}
+    secretName: {{ .secretName }}
+    {{- else }}
+    secretName: {{ $relname}}-{{ $hostname }}-tls
+    {{- end }}
+  {{- end }}
 ---
   {{ end }}
 
