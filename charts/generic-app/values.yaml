@@ -14,6 +14,9 @@ replicaSet:
     pullPolicy: IfNotPresent
   minReadySeconds: 1 
 replicaCount: 1
+ingress:
+  enabled: false
+  tls: false
 hpa:
   maxReplicas: 2
   minReplicas: 1
