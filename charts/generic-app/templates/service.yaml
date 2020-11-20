@@ -13,8 +13,7 @@ spec:
     targetPort: {{ .Values.service.internalPort }}
     protocol: TCP
     name: {{ .Release.Name }}
-  selector:
-    load-balancer-{{ .Release.Name }}: 'true'
+  selector: {}
   {{- if .Values.service.type }}
   type: {{ .Values.service.type }}
   {{- end }}
