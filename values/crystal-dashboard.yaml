@@ -5,7 +5,7 @@ replicaSet:
   healthcheck: /healthz
   image:
     pullPolicy: IfNotPresent
-    repository: isakgicu/crystal-dashboard
+    repository: index.docker.io/isakgicu/crystal-dashboard
     tag: latest
   initialDelaySeconds: "30"
   minReadySeconds: "20"
