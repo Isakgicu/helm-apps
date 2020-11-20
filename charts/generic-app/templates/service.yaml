@@ -14,7 +14,7 @@ spec:
     protocol: TCP
     name: {{ .Release.Name }}
   selector:
-    app: {{ .Release.Name }}
+    load-balancer-{{ .Release.Name }}: 'true'
   {{- if .Values.service.type }}
   type: {{ .Values.service.type }}
   {{- end }}
