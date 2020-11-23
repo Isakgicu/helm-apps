@@ -2,18 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.service.name }}
-  labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    {{- if .Values.service.loadbalancer }}
-    load-balancer-web: 'true'
-    {{- end }}
 spec:
   ports:
   - port: {{ .Values.service.externalPort }}
     targetPort: {{ .Values.service.internalPort }}
     protocol: TCP
     name: {{ .Release.Name }}
-  selector: {}
+  selector:
+    load-balancer-{{ .Release.Name }}: 'true'
   {{- if .Values.service.type }}
   type: {{ .Values.service.type }}
   {{- end }}

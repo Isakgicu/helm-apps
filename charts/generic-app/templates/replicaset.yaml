@@ -5,8 +5,6 @@ apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: "{{ .Release.Name }}-rs"
-  labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   {{- if .Values.replicaSet.podAntiaffinity.enabled }}
