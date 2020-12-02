@@ -7,10 +7,10 @@ replicaSet:
     pullPolicy: IfNotPresent
     repository: index.docker.io/isakgicu/crystal-dashboard
     tag: latest
-  initialDelaySeconds: "30"
+  initialDelaySeconds: "10"
   minReadySeconds: "20"
   periodSeconds: "30"
-  timeoutSeconds: "5"
+  timeoutSeconds: "15"
 ingress:
   enabled: true
   annotations:
