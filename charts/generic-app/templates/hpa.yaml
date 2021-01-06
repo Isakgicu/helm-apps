@@ -8,11 +8,11 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    {{- if .Values.replicaSet.enabled }}
+    {{- if .Values.replicaSet }}
     kind: ReplicaSet
     name: "{{ .Release.Name }}-rs"
     {{- end }}
-    {{- if .Values.deployment.enabled }}
+    {{- if .Values.deployment }}
     kind: Deployment
     name: "{{ .Release.Name }}-deployment"
     {{- end }}

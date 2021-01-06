@@ -1,4 +1,4 @@
-{{- if .Values.deployment.enabled }}
+{{- if .Values.deployment }}
 {{ $podAnnotations := toYaml .Values.deployment.podAnnotations | indent 8 }}
 {{ $nodeSelector := toYaml .Values.deployment.nodeSelector | indent 8 }}
 apiVersion: apps/v1

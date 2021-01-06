@@ -1,18 +1,18 @@
-deployment:
-  enabled: false
-replicaSet:
-  enabled: true
-  healthcheck: /healthz
-  podAnnotations: {}
-  revisionhistory: 3
-  podAntiaffinity:
-    enabled: true
-  initialDelaySeconds: 10 
-  image:
-    repository: nginx
-    tag: latest
-    pullPolicy: IfNotPresent
-  minReadySeconds: 1 
+# deployment:
+#   enabled: false
+# replicaSet:
+#   enabled: true
+#   healthcheck: /healthz
+#   podAnnotations: {}
+#   revisionhistory: 3
+#   podAntiaffinity:
+#     enabled: true
+#   initialDelaySeconds: 10 
+#   image:
+#     repository: nginx
+#     tag: latest
+#     pullPolicy: IfNotPresent
+#   minReadySeconds: 1 
 replicaCount: 1
 ingress:
   enabled: false

@@ -1,4 +1,4 @@
-{{- if .Values.replicaSet.enabled }}
+{{- if .Values.replicaSet }}
 {{ $podAnnotations := toYaml .Values.replicaSet.podAnnotations | indent 8 }}
 {{ $nodeSelector := toYaml .Values.replicaSet.nodeSelector | indent 8 }}
 apiVersion: apps/v1
