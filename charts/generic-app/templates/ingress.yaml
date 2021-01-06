@@ -1,4 +1,4 @@
-{{- if .Values.ingress -}}
+{{- if .Values.ingress.enabled -}}
 {{ $relname := .Values.service.name }}
 {{ if .Values.service.type }}
 {{ else }}
