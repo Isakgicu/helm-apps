@@ -1,0 +1,137 @@
+
+{{ $podAnnotations := toYaml .Values.app.podAnnotations | indent 8 }}
+{{ $nodeSelector := toYaml .Values.app.nodeSelector | indent 8 }}
+apiVersion: apps/v1
+kind: {{ .Values.app.kind | default "ReplicaSet"}}
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- if .Values.app.podAntiaffinity.enabled }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  {{- end }}
+  minReadySeconds: {{ default 1 .Values.app.minReadySeconds}}
+  {{- if eq .Values.app.kind "Deployment" }}
+  revisionHistoryLimit: {{ default 3 .Values.app.revisionhistory }}
+  {{- if .Values.app.strategy }} 
+  strategy:
+{{ toYaml .Values.app.strategy | indent 4 }}
+  {{- else }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 50%
+  {{- end }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+      annotations:
+{{ $podAnnotations }}
+    spec:
+      {{- if .Values.app.nodeSelector }}
+      nodeSelector:
+{{ $nodeSelector }}
+      {{- end }}
+      {{- if .Values.app.podAntiaffinity.enabled | default true}}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - {{ .Release.Name }}
+                topologyKey: "kubernetes.io/hostname"
+      {{- end }}
+      {{- if .Values.app.serviceAccountName }}
+      serviceAccountName: {{ .Values.app.serviceAccountName }}
+      {{- end }}
+      {{- if .Values.app.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.app.imagePullSecret }}
+      {{- end }}
+      containers:
+      - name: {{ .Release.Name }}
+        {{- if .Values.app.command }}
+        command:
+          {{- range .Values.app.command }}
+          - {{ . }}
+          {{- end }}
+        {{- end}}
+        {{- if .Values.app.args }}
+        args:
+          {{- range .Values.app.args }}
+          - {{ . }}
+          {{- end }}
+        {{- end}}
+        image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default "latest"}}"
+        imagePullPolicy: {{ .Values.app.image.pullPolicy | default "IfNotPresent"}}
+        {{- if .Values.env }}
+        env:
+{{ toYaml .Values.env | indent 8 }}
+        {{- end }}
+        {{- if .Values.envFrom }}
+        envFrom:
+{{ toYaml .Values.envFrom | indent 8 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ default 8080 .Values.service.internalPort }}
+        {{- if .Values.app.healthcheck }}
+        livenessProbe:
+          initialDelaySeconds: {{ default 10 .Values.app.initialDelaySeconds}}
+          periodSeconds: {{ default 10 .Values.app.periodSeconds}}
+          timeoutSeconds: {{ default 1 .Values.app.timeoutSeconds}}
+          successThreshold: 1
+          failureThreshold: {{ default 3 .Values.app.failureThreshold}}
+          httpGet:
+            path: {{ .Values.app.healthcheck | default "/management/health" }}
+            port: {{ .Values.service.internalPort | default 8080}}
+        readinessProbe:
+          initialDelaySeconds: {{ default 10 .Values.app.initialDelaySeconds}}
+          periodSeconds: {{ default 10 .Values.app.periodSeconds}}
+          timeoutSeconds: {{ default 1 .Values.app.timeoutSeconds}}
+          successThreshold: {{ default 1 .Values.app.successThreshold}}
+          failureThreshold: {{ default 3 .Values.app.failureThreshold}}
+          httpGet:
+            path: {{ .Values.app.healthcheck | default "/management/health"}}
+            port: {{ .Values.app.healthcheckPort | default 8081}}
+        {{- end }}
+        {{- if .Values.app.healthcheckCommand }}
+        livenessProbe:
+          initialDelaySeconds: {{ default 10 .Values.app.initialDelaySeconds}}
+          periodSeconds: {{ default 10 .Values.app.periodSeconds}}
+          timeoutSeconds: {{ default 1 .Values.app.timeoutSeconds}}
+          successThreshold: 1
+          failureThreshold: {{ default 3 .Values.app.failureThreshold}}
+          exec:
+            command:
+              {{- range .Values.app.healthcheckCommand }}
+              - {{ . }}
+              {{- end }}
+        readinessProbe:
+          initialDelaySeconds: {{ default 10 .Values.app.initialDelaySeconds}}
+          periodSeconds: {{ default 10 .Values.app.periodSeconds}}
+          timeoutSeconds: {{ default 1 .Values.app.timeoutSeconds}}
+          successThreshold: {{ default 1 .Values.app.successThreshold}}
+          failureThreshold: {{ default 3 .Values.app.failureThreshold}}
+          exec:
+            command:
+              {{- range .Values.app.healthcheckCommand }}
+              - {{ . }}
+              {{- end }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+{{- if .Values.app.extraContainers }}
+{{ toYaml .Values.app.extraContainers | indent 6 }}
+{{- end }}
+{{- if .Values.app.extraVolumes }}
+      volumes:
+{{ toYaml .Values.app.extraVolumes | indent 6 }}
+{{- end }}

@@ -1,36 +1,16 @@
-{{- $kubeTargetVersion := .Capabilities.KubeVersion.GitVersion }}
-{{- if .Values.ingress }}
-{{ $svcName := .Values.service.name }}
-{{ if .Values.service.type }}
-{{ else }}
-{{ $svcName := .Values.service.name }}
+{{- if .Values.ingress.enabled | default true}}
+{{ $svcName := .Values.service.name | default .Release.Name }}
 {{- range .Values.ingress.hosts }}
 {{- $hostname := .name }}
 {{ $domain := (split "." .name)._0 }}
 
-{{- if (semverCompare ">=1.19.0" $kubeTargetVersion) }}
 apiVersion: networking.k8s.io/v1
-{{- else }}
-apiVersion: networking.k8s.io/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
   name: {{ $svcName }}-{{ $domain }}
 spec:
-  tls:
-  - hosts:
-    {{- range .hosts }}
-    - {{ $hostname }}
-    {{- end }}
-    {{- if .secretName }}
-    secretName: {{ .secretName }}
-    {{- else }}
-    secretName: {{ $svcName}}-{{ $hostname }}-tls
-    {{- end }}
   rules:
-    {{- range .hosts }}
     - host: {{ $hostname }}
-    {{- if (semverCompare ">=1.19.0" $kubeTargetVersion) }}
       http:
         paths:
         - path: {{ default "/" .path }}
@@ -40,17 +20,5 @@ spec:
               name: {{ $svcName }}
               port:
                 number: 80
-    {{- else }}
-      http:
-        paths:
-        - path: {{ default "/" .path }}
-          backend:
-            serviceName: {{ $svcName }}
-            servicePort: 80
-    {{- end }}
-    {{- end }}
----
   {{ end }}
-
-{{ end }}
 {{ end }}

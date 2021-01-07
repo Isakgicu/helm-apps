@@ -1,18 +1,17 @@
-# deployment:
-#   enabled: false
-# replicaSet:
-#   enabled: true
-#   healthcheck: /healthz
-#   podAnnotations: {}
-#   revisionhistory: 3
-#   podAntiaffinity:
-#     enabled: true
-#   initialDelaySeconds: 10 
-#   image:
-#     repository: nginx
-#     tag: latest
-#     pullPolicy: IfNotPresent
-#   minReadySeconds: 1 
+app:
+  kind: ReplicaSet
+  healthcheck: /management/health
+  healthcheckPort: 8081
+  podAnnotations: {}
+  revisionhistory: 3
+  podAntiaffinity:
+    enabled: true
+  initialDelaySeconds: 10 
+  image:
+    repository: nginx
+    tag: latest
+    pullPolicy: IfNotPresent
+  minReadySeconds: 1 
 replicaCount: 1
 ingress:
   enabled: false
@@ -25,10 +24,7 @@ hpa:
     targetPercentage: 70
 service:
   type: ""
-  loadbalancer: true
-  name: api
-  externalPort: 80
-  internalPort: 8080
+  name:
 resources:
   limits:
     cpu: 100m

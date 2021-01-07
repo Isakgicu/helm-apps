@@ -8,14 +8,8 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    {{- if .Values.replicaSet }}
-    kind: ReplicaSet
-    name: "{{ .Release.Name }}-rs"
-    {{- end }}
-    {{- if .Values.deployment }}
-    kind: Deployment
-    name: "{{ .Release.Name }}-deployment"
-    {{- end }}
+    kind: {{ .Values.app.kind | default "ReplicaSet"}}
+    name: "{{ .Release.Name }}"
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   minReplicas: {{ .Values.hpa.minReplicas }}
   metrics:
