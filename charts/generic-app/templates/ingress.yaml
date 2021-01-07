@@ -4,7 +4,6 @@
 {{ if .Values.service.type }}
 {{ else }}
 {{ $svcName := .Values.service.name }}
-{{ $annotations := toYaml .Values.ingress.annotations | indent 4 }}
 {{- range .Values.ingress.hosts }}
 {{- $hostname := .name }}
 {{ $domain := (split "." .name)._0 }}
@@ -18,7 +17,7 @@ kind: Ingress
 metadata:
   name: {{ $svcName }}-{{ $domain }}
   annotations:
-{{ $annotations }}
+{{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
   tls:
   - hosts:
