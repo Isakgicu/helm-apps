@@ -1,6 +1,6 @@
 {{- $kubeTargetVersion := .Capabilities.KubeVersion.GitVersion }}
 {{- if .Values.ingress }}
-{{ $relname := .Values.service.name }}
+{{ $svcName := .Values.service.name }}
 {{ if .Values.service.type }}
 {{ else }}
 {{ $svcName := .Values.service.name }}
@@ -22,16 +22,16 @@ metadata:
 spec:
   tls:
   - hosts:
-    {{- range .rules }}
+    {{- range .hosts }}
     - {{ $hostname }}
     {{- end }}
     {{- if .secretName }}
     secretName: {{ .secretName }}
     {{- else }}
-    secretName: {{ $relname}}-{{ $hostname }}-tls
+    secretName: {{ $svcName}}-{{ $hostname }}-tls
     {{- end }}
   rules:
-    {{- range .rules }}
+    {{- range .hosts }}
     - host: {{ $hostname }}
     {{- if (semverCompare ">=1.19.0" $kubeTargetVersion) }}
       http:
