@@ -16,8 +16,6 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ $svcName }}-{{ $domain }}
-  annotations:
-{{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
   tls:
   - hosts:
