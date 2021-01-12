@@ -4,8 +4,8 @@ metadata:
   name: {{ .Values.service.name | default .Release.Name}}
 spec:
   ports:
-  - port: {{ .Values.service.externalPort | default 8080}}
-    targetPort: {{ .Values.service.internalPort | default 8080}}
+  - port: {{ .Values.service.externalPort }}
+    targetPort: {{ .Values.service.internalPort }}
     protocol: TCP
     name: {{ .Release.Name }}
   selector:

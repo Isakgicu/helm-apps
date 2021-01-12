@@ -1,30 +1,30 @@
+serviceaccount:
+  name: ""
 app:
   kind: ReplicaSet
-  healthcheck: /management/health
-  healthcheckPort: 8081
+  serviceAccountName: ""
   podAnnotations: {}
   revisionhistory: 3
+  minReadySeconds: 1
   podAntiaffinity:
     enabled: true
-  initialDelaySeconds: 10 
   image:
     repository: nginx
     tag: latest
     pullPolicy: IfNotPresent
-  minReadySeconds: 1 
-replicaCount: 1
-ingress:
-  enabled: false
-hpa:
-  maxReplicas: 2
-  minReplicas: 1
-  cpuUtilization:
-    targetPercentage: 70
-  memoryUtilization:
-    targetPercentage: 70
-service:
-  type: ""
-  name:
+  imagePullSecrets: ""
+  healthcheck:
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    httpGet:
+      enabled: true
+      path: /management/health
+      port: 8081
+    exec:                       ########################################
+      command:                  ## Must set httpGet.enabled to false. ##
+                                ########################################
 resources:
   limits:
     cpu: 100m
@@ -32,4 +32,24 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-    
+
+ingress:
+  enabled: false
+
+replicaCount: 1
+hpa:
+  maxReplicas: 2
+  minReplicas: 1
+  cpuUtilization:
+    targetPercentage: 70
+  memoryUtilization:
+    targetPercentage: 70
+
+service:
+  type: ""
+  name: ""
+  internalPort: 8080
+  externalPort: 8080
+
+extraContainers: {}
+extraVolumes: ""

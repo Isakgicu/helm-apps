@@ -1,0 +1,117 @@
+{{- if eq .Values.app.kind "ReplicaSet"}}
+{{ $podAnnotations := toYaml .Values.app.podAnnotations | indent 8 }}
+{{ $nodeSelector := toYaml .Values.app.nodeSelector | indent 8 }}
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- if .Values.app.podAntiaffinity.enabled }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  {{- end }}
+  minReadySeconds: {{ .Values.app.minReadySeconds}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+      annotations:
+{{ $podAnnotations }}
+    spec:
+      {{- if .Values.app.nodeSelector }}
+      nodeSelector:
+{{ $nodeSelector }}
+      {{- end }}
+      {{- if .Values.app.podAntiaffinity.enabled }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - {{ .Release.Name }}
+                topologyKey: "kubernetes.io/hostname"
+      {{- end }}
+      {{- if .Values.app.serviceAccountName }}
+      serviceAccountName: {{ .Values.app.serviceAccountName | default .Release.Name }}
+      {{- end }}
+      {{- if .Values.app.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.app.imagePullSecret }}
+      {{- end }}
+      containers:
+      - name: {{ .Release.Name }}
+        {{- if .Values.app.command }}
+        command:
+          {{- range .Values.app.command }}
+          - {{ . }}
+          {{- end }}
+        {{- end}}
+        {{- if .Values.app.args }}
+        args:
+          {{- range .Values.app.args }}
+          - {{ . }}
+          {{- end }}
+        {{- end}}
+        image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+        {{- if .Values.env }}
+        env:
+{{ toYaml .Values.env | indent 8 }}
+        {{- end }}
+        {{- if .Values.envFrom }}
+        envFrom:
+{{ toYaml .Values.envFrom | indent 8 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        livenessProbe:
+          initialDelaySeconds: {{ .Values.app.healthcheck.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.healthcheck.periodSeconds }}
+          timeoutSeconds: {{ .Values.app.healthcheck.timeoutSeconds }}
+          successThreshold: 1
+          failureThreshold: {{ .Values.app.healthcheck.failureThreshold }}
+          {{- if .Values.app.healthcheck.httpGet.enabled }}
+          httpGet:
+            path: {{ .Values.app.healthcheck.httpGet.path }}
+            port: {{ .Values.app.healthcheck.httpGet.port }}
+          {{- else }}
+          exec:
+            command:
+              {{- range .Values.app.healthcheck.exec.command }}
+              - {{ . }}
+              {{- end }}
+          {{- end }}
+        readinessProbe:
+          initialDelaySeconds: {{ .Values.app.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.periodSeconds }}
+          timeoutSeconds: {{ .Values.app.timeoutSeconds }}
+          successThreshold: {{ .Values.app.successThreshold }}
+          failureThreshold: {{ .Values.app.failureThreshold }}
+          {{- if .Values.app.healthcheck.httpGet.enabled }}
+          httpGet:
+            path: {{ .Values.app.healthcheck.httpGet.path }}
+            port: {{ .Values.app.healthcheck.httpGet.port }}
+          {{- else }}
+          exec:
+            command:
+              {{- range .Values.app.healthcheck.exec.command }}
+              - {{ . }}
+              {{- end }}
+          {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+{{- if .Values.extraContainers }}
+{{ toYaml .Values.extraContainers | indent 6 }}
+{{- end }}
+{{- if .Values.extraVolumes }}
+      volumes:
+{{ toYaml .Values.extraVolumes | indent 6 }}
+{{- end }}
+{{- end }}
