@@ -25,6 +25,9 @@ app:
     exec:                       ########################################
       command:                  ## Must set httpGet.enabled to false. ##
                                 ########################################
+budget:
+  minAvailable: 50%
+
 resources:
   limits:
     cpu: 100m
